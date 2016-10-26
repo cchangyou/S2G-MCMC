@@ -1,0 +1,80 @@
+#include <string>
+#include <vector>
+
+#include "caffe/solver.hpp"
+//#include "caffe/util/hdf5.hpp"
+#include "caffe/util/io.hpp"
+#include "caffe/util/upgrade_proto.hpp"
+
+namespace caffe {
+
+template <typename Dtype>
+void SGDBDKSolver<Dtype>::ComputeUpdateValue(int param_id, Dtype rate) {
+//const vector<string>& names = this->net_->layer_names();
+//vector<int>& idx = this->net_->learnable_param_ids_;
+//LOG(INFO) << "In layer: " << this->net_->layer_names()[param_id] << ", len1 = " << this->net_->learnable_params().size() << ", len2 = " << this->net_->layer_names().size();
+//vector<vector<int> >& vec = this->net_->param_id_vecs_;
+//LOG(INFO) << "param_id = " << param_id << ", layer_id = " << this->net_->param_layer_ids()[param_id];
+//for(map<string,int>::const_iterator it = vec.begin(); it != vec.end(); ++it){
+//	LOG(INFO) << "params_name = " << it->first << ", params_id = " << it->second;
+//} 
+
+const vector<Blob<Dtype>*>& net_params = this->net_->params();
+  const vector<float>& net_params_lr = this->net_->params_lr();
+  Dtype momentum = this->param_.momentum();
+  Dtype local_rate = rate * net_params_lr[param_id];
+  string layer_name = this->net_->param_layer_ids()[param_id];
+  int sgld = layer_name.substr(layer_name.length()-3, 3).compare("BDK");
+  // Compute the update to history, then copy it to the parameter diff.
+  switch (Caffe::mode()) {
+  case Caffe::CPU: {
+    if(sgld == 0){//variance? standard derivation?
+        caffe_rng_gaussian(net_params[param_id]->count(), Dtype(0), Dtype(sqrt(2*(1-momentum)*local_rate)),
+            this->temp_[param_id]->mutable_cpu_data());
+        //caffe_scal(net_params[param_id]->count(), Dtype(sqrt(2*(1-momentum))), this->temp_[param_id]->mutable_cpu_data());
+    }
+    caffe_cpu_axpby(net_params[param_id]->count(), local_rate,
+        net_params[param_id]->cpu_diff(), momentum,
+        this->history_[param_id]->mutable_cpu_data());
+    if(sgld == 0){
+        caffe_cpu_axpby(net_params[param_id]->count(), Dtype(1),
+            this->temp_[param_id]->cpu_data(), Dtype(1),
+            this->history_[param_id]->mutable_cpu_diff());
+    }
+    caffe_copy(net_params[param_id]->count(),
+        this->history_[param_id]->cpu_data(),
+        net_params[param_id]->mutable_cpu_diff());
+    break;
+  }
+  case Caffe::GPU: {
+#ifndef CPU_ONLY
+    if(sgld == 0){
+        caffe_gpu_rng_gaussian(net_params[param_id]->count(), Dtype(0), Dtype(sqrt(2*(1-momentum)*local_rate)),
+            this->temp_[param_id]->mutable_gpu_data());
+        //caffe_scal(net_params[param_id]->count(), Dtype(sqrt(2*(1-momentum))), this->temp_[param_id]->mutable_gpu_data());
+    }
+    caffe_gpu_axpby(net_params[param_id]->count(), local_rate,
+        net_params[param_id]->gpu_diff(), momentum,
+        this->history_[param_id]->mutable_gpu_data());
+    if(sgld == 0){
+        caffe_gpu_axpby(net_params[param_id]->count(), Dtype(1),
+            this->temp_[param_id]->gpu_data(), Dtype(1),
+            this->history_[param_id]->mutable_cpu_diff());
+    }
+    caffe_copy(net_params[param_id]->count(),
+        this->history_[param_id]->gpu_data(),
+        net_params[param_id]->mutable_gpu_diff());
+#else
+    NO_GPU;
+#endif
+    break;
+  }
+  default:
+    LOG(FATAL) << "Unknown caffe mode: " << Caffe::mode();
+  }
+}
+
+INSTANTIATE_CLASS(SGDBDKSolver);
+REGISTER_SOLVER_CLASS(SGDBDK);
+
+}  // namespace caffe

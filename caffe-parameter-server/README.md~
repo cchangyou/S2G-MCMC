@@ -1,0 +1,6 @@
+
+The system is adapted from: https://www.cs.rochester.edu/u/yli/caffe-ps.html.
+
+To use the system, you have to install the right version of third-party libraries such as MPICH.
+
+I added some SG-MCMC solvers such as SGHMC and PSGLD. I used an unstandard (somewhat stupid) implementation for these solvers, such that to use them, you need to define names of layers ended with **BDK** in the model definition file. For an example, please refer to examples/mnist/lenet_train_test_paral_BDK.prototxt.

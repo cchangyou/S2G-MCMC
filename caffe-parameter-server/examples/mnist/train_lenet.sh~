@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+dist_dir=distribute
+#mpirun -f hostfile -np $1 ./$dist_dir/bin/caffe.bin train --solver=examples/mnist/lenet_solver_mpi.prototxt $2
+#mpirun --hostfile hostfile -np 1 ./$dist_dir/bin/caffe.bin train --solver=./examples/mnist/lenet_solver_mpi.prototxt
+#mpirun --hostfile hostfile -np 1 ./$dist_dir/bin/caffe.bin train --solver=./examples/mnist/lenet_solver_psgld.prototxt
+#mpirun --hostfile hostfile -np 1 ./$dist_dir/bin/caffe.bin train --solver=./examples/mnist/lenet_solver_BDK_1.prototxt 2>>mnist_1.log
+#mpirun -f hostfile -np 1 ./build/tools/caffe train --solver=examples/mnist/lenet_solver_mpi.prototxt
+#mpiexec.hydra -prepend-rank -n 2 ./build/tools/caffe train --solver=examples/mnist/lenet_solver_mpi.prototxt
+
+#mpirun --hostfile hostfile -np 1 ./$dist_dir/bin/caffe.bin train --solver=./examples/mnist/lenet_solver_paral_BDK.prototxt
+
+#mpirun --hostfile hostfile -np 2 ./$dist_dir/bin/caffe.bin train --solver=./examples/mnist/lenet_solver_BDK_2.prototxt 2>>mnist_2.log
+
+mpirun --hostfile hostfile -np 3 ./$dist_dir/bin/caffe.bin train --solver=./examples/mnist/lenet_solver_BDK_3.prototxt 2>>mnist_3.log
+
+mpirun --hostfile hostfile -np 4 ./$dist_dir/bin/caffe.bin train --solver=./examples/mnist/lenet_solver_BDK_4.prototxt 2>>mnist_4.log
+
+mpirun --hostfile hostfile -np 5 ./$dist_dir/bin/caffe.bin train --solver=./examples/mnist/lenet_solver_BDK_5.prototxt 2>>mnist_5.log
+
+mpirun --hostfile hostfile -np 6 ./$dist_dir/bin/caffe.bin train --solver=./examples/mnist/lenet_solver_BDK_6.prototxt 2>>mnist_6.log
+
+mpirun --hostfile hostfile -np 7 ./$dist_dir/bin/caffe.bin train --solver=./examples/mnist/lenet_solver_BDK_7.prototxt 2>>mnist_7.log
+
+mpirun --hostfile hostfile -np 8 ./$dist_dir/bin/caffe.bin train --solver=./examples/mnist/lenet_solver_BDK_8.prototxt 2>>mnist_8.log
+
+mpirun --hostfile hostfile -np 9 ./$dist_dir/bin/caffe.bin train --solver=./examples/mnist/lenet_solver_BDK_9.prototxt 2>>mnist_9.log
+
+mpirun --hostfile hostfile -np 10 ./$dist_dir/bin/caffe.bin train --solver=./examples/mnist/lenet_solver_BDK_10.prototxt 2>>mnist_10.log

@@ -1,0 +1,190 @@
+name: "LeNet"
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "./data/mnist/mnist_train_lmdb"
+    batch_size: 64
+    backend: LMDB
+  }
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "./data/mnist/mnist_test_lmdb"
+    batch_size: 100
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1_1_BDK"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1_1_BDK"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu2_1_BDK"
+  type: "ReLU"
+  bottom: "conv1_1_BDK"
+  top: "conv1_1_BDK"
+}
+layer {
+  name: "pool1_1_BDK"
+  type: "Pooling"
+  bottom: "conv1_1_BDK"
+  top: "pool1_1_BDK"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2_1_BDK"
+  type: "Convolution"
+  bottom: "pool1_1_BDK"
+  top: "conv2_1_BDK"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu3_1_BDK"
+  type: "ReLU"
+  bottom: "conv2_1_BDK"
+  top: "conv2_1_BDK"
+}
+layer {
+  name: "pool2_1_BDK"
+  type: "Pooling"
+  bottom: "conv2_1_BDK"
+  top: "pool2_1_BDK"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1_1_BDK"
+  type: "InnerProduct"
+  bottom: "pool2_1_BDK"
+  top: "ip1_1_BDK"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1_1_BDK"
+  type: "ReLU"
+  bottom: "ip1_1_BDK"
+  top: "ip1_1_BDK"
+}
+layer {
+  name: "ip2_1_BDK"
+  type: "InnerProduct"
+  bottom: "ip1_1_BDK"
+  top: "ip2_1_BDK"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss1"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2_1_BDK"
+  bottom: "label"
+  top: "loss1"
+}
+layer {
+  name: "accuracy"
+  type: "AveAccuracy"
+  bottom: "ip2_1_BDK"
+  bottom: "label"
+  top: "accuracy"
+  ave_accuracy_param {
+  	### #partitions for testing
+    npartition: 100
+    ### batch size for testing
+    nbatch: 100
+    ### #classes
+    nclass: 10
+    ### when to start model averaging
+    burnin: 0
+  }
+  include {
+    phase: TEST
+  }
+}

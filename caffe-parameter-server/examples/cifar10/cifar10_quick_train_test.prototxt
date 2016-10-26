@@ -1,0 +1,238 @@
+name: "CIFAR10_quick"
+layer {
+  name: "cifar"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mean_file: "examples/cifar10/mean.binaryproto"
+  }
+  data_param {
+    source: "examples/cifar10/cifar10_train_lmdb"
+    batch_size: 100
+    backend: LMDB
+  }
+}
+layer {
+  name: "cifar"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    mean_file: "examples/cifar10/mean.binaryproto"
+  }
+  data_param {
+    source: "examples/cifar10/cifar10_test_lmdb"
+    batch_size: 100
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1_BDK"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1_BDK"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 32
+    pad: 2
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.0001
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1_BDK"
+  type: "Pooling"
+  bottom: "conv1_BDK"
+  top: "pool1_BDK"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "relu1_BDK"
+  type: "ReLU"
+  bottom: "pool1_BDK"
+  top: "pool1_BDK"
+}
+layer {
+  name: "conv2_BDK"
+  type: "Convolution"
+  bottom: "pool1_BDK"
+  top: "conv2_BDK"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 32
+    pad: 2
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu2_BDK"
+  type: "ReLU"
+  bottom: "conv2_BDK"
+  top: "conv2_BDK"
+}
+layer {
+  name: "pool2_BDK"
+  type: "Pooling"
+  bottom: "conv2_BDK"
+  top: "pool2_BDK"
+  pooling_param {
+    pool: AVE
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "conv3_BDK"
+  type: "Convolution"
+  bottom: "pool2_BDK"
+  top: "conv3_BDK"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 64
+    pad: 2
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu3_BDK"
+  type: "ReLU"
+  bottom: "conv3_BDK"
+  top: "conv3_BDK"
+}
+layer {
+  name: "pool3_BDK"
+  type: "Pooling"
+  bottom: "conv3_BDK"
+  top: "pool3_BDK"
+  pooling_param {
+    pool: AVE
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "ip1_BDK"
+  type: "InnerProduct"
+  bottom: "pool3_BDK"
+  top: "ip1_BDK"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 64
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "ip2_BDK"
+  type: "InnerProduct"
+  bottom: "ip1_BDK"
+  top: "ip2_BDK"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "accuracy1"
+  type: "AveAccuracy"
+  bottom: "ip2_BDK"
+  bottom: "label"
+  top: "accuracy1"
+  ave_accuracy_param {
+    npartition: 100
+    nbatch: 100
+    nclass: 10
+    burnin: 0
+  }
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "ip2_BDK"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2_BDK"
+  bottom: "label"
+  top: "loss"
+}

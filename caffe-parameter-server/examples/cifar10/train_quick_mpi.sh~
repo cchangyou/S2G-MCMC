@@ -1,0 +1,43 @@
+#!/usr/bin/env sh
+
+dist_dir=distribute
+
+#mpirun --hostfile hostfile -np 1 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_mpi_1.prototxt 2>>cifar10_quick_1.log
+
+#mpirun --hostfile hostfile -np 2 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_mpi_2.prototxt 2>>cifar10_quick_2.log
+
+#mpirun --hostfile hostfile -np 3 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_mpi_3.prototxt 2>>cifar10_quick_3.log
+
+#mpirun --hostfile hostfile -np 4 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_mpi_4.prototxt 2>>cifar10_quick_4.log
+
+#mpirun --hostfile hostfile -np 5 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_mpi_5.prototxt 2>>cifar10_quick_5.log
+
+#mpirun --hostfile hostfile -np 6 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_mpi_6.prototxt 2>>cifar10_quick_6.log
+
+#mpirun --hostfile hostfile -np 7 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_mpi_7.prototxt 2>>cifar10_quick_7.log
+
+#mpirun --hostfile hostfile -np 8 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_mpi_8.prototxt 2>>cifar10_quick_8.log
+
+#mpirun --hostfile hostfile -np 9 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_mpi_9.prototxt 2>>cifar10_quick_9.log
+
+#mpirun --hostfile hostfile -np 10 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_mpi_10.prototxt 2>>cifar10_quick_10.log
+
+###############################
+
+mpirun --hostfile hostfile -np 2 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_m0_mpi.prototxt 2>>./results/cifar10_m0/cifar10_quick_m0_2.log
+
+mpirun --hostfile hostfile -np 3 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_m0_mpi.prototxt 2>>./results/cifar10_m0/cifar10_quick_m0_3.log
+
+mpirun --hostfile hostfile -np 4 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_m0_mpi.prototxt 2>>./results/cifar10_m0/cifar10_quick_m0_4.log
+
+mpirun --hostfile hostfile -np 5 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_m0_mpi.prototxt 2>>./results/cifar10_m0/cifar10_quick_m0_5.log
+
+mpirun --hostfile hostfile -np 6 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_m0_mpi.prototxt 2>>./results/cifar10_m0/cifar10_quick_m0_6.log
+
+mpirun --hostfile hostfile -np 7 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_m0_mpi.prototxt 2>>./results/cifar10_m0/cifar10_quick_m0_7.log
+
+mpirun --hostfile hostfile -np 8 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_m0_mpi.prototxt 2>>./results/cifar10_m0/cifar10_quick_m0_8.log
+
+mpirun --hostfile hostfile -np 9 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_m0_mpi.prototxt 2>>./results/cifar10_m0/cifar10_quick_m0_9.log
+
+mpirun --hostfile hostfile -np 10 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/cifar10_quick_solver_m0_mpi.prototxt 2>>./results/cifar10_m0/cifar10_quick_m0_10.log

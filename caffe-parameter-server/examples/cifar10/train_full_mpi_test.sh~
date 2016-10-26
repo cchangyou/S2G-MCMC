@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+dist_dir=distribute
+
+mpirun --hostfile hostfile -np 4 ./$dist_dir/bin/caffe.bin train --solver=examples/cifar10/lenet_solver_BDK_4.prototxt 2>>cifar10_full_4_test.log
+

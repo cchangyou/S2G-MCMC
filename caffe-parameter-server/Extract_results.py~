@@ -1,0 +1,49 @@
+import re
+import os.path
+import datetime
+
+pattern1 = re.compile("Test net output #1: loss = [0-9]+.[0-9]+")
+pattern2 = re.compile("[0-9]+:[0-9]+:[0-9]+.[0-9]+")
+
+train_min = -1
+val = -1
+train_idx = -1
+heldout_min = train_min
+heldout_idx = train_idx
+test_min = train_min
+test_idx = train_idx
+
+lost_list = list()
+time_list = list()
+
+pid = 'a9a_lr_1'
+start_time = ''
+t = ''
+if os.path.isfile(pid + '.log'):
+	train_min = -1
+	train_idx = -1
+	for line in open(pid + '.log'):
+		if len(start_time) == 0:
+			start_time = re.findall(pattern2, line)
+			if len(start_time) > 0:
+				t = datetime.datetime.strptime(start_time[0], "%H:%M:%S.%f")
+		res1 = re.findall(pattern1, line)
+		if len(res1) > 0:
+			a = res1[0].split(' ')
+			#for j in range(0, len(a)):
+			#	print a[j]
+			c = float(a[6])
+			#print b
+			lost_list.append(c)
+			res2 = re.findall(pattern2, line)
+			t1 = datetime.datetime.strptime(res2[0], "%H:%M:%S.%f")
+			t1 = t1 - t
+			s = t1.total_seconds()
+			time_list.append(s)
+
+f_lost = open(pid + '.loss', 'w')
+for item in lost_list:
+	f_lost.write("%s\n" % item)
+f_lost = open(pid + '.time', 'w')
+for item in time_list:
+	f_lost.write("%s\n" % item)

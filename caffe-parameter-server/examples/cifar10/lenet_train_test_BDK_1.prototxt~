@@ -1,0 +1,180 @@
+name: "LeNet"
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "./data/mnist/mnist_train_lmdb"
+    batch_size: 64
+    backend: LMDB
+  }
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "./data/mnist/mnist_test_lmdb"
+    batch_size: 100
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1_BDK"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1_BDK"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu2_BDK"
+  type: "ReLU"
+  bottom: "conv1_BDK"
+  top: "conv1_BDK"
+}
+layer {
+  name: "pool1_BDK"
+  type: "Pooling"
+  bottom: "conv1_BDK"
+  top: "pool1_BDK"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2_BDK"
+  type: "Convolution"
+  bottom: "pool1_BDK"
+  top: "conv2_BDK"
+  param {
+    lr_mult: 1
+  } 
+  param {
+    lr_mult: 2
+  } 
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    } 
+    bias_filler {
+      type: "constant"
+    } 
+  } 
+}
+layer {
+  name: "relu3_BDK"
+  type: "ReLU"
+  bottom: "conv2_BDK"
+  top: "conv2_BDK"
+}
+layer {
+  name: "pool2_BDK"
+  type: "Pooling"
+  bottom: "conv2_BDK"
+  top: "pool2_BDK"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1_BDK"
+  type: "InnerProduct"
+  bottom: "pool2_BDK"
+  top: "ip1_BDK"
+  param {
+    lr_mult: 1
+  } 
+  param {
+    lr_mult: 2
+  } 
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    } 
+    bias_filler {
+      type: "constant"
+    } 
+  } 
+}
+layer {
+  name: "relu1_BDK"
+  type: "ReLU"
+  bottom: "ip1_BDK"
+  top: "ip1_BDK"
+}
+layer { 
+  name: "ip2_BDK"
+  type: "InnerProduct"
+  bottom: "ip1_BDK"
+  top: "ip2_BDK" 
+  param {
+    lr_mult: 1
+  } 
+  param {
+    lr_mult: 2
+  } 
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+} 
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "ip2_BDK"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2_BDK"
+  bottom: "label"
+  top: "loss"
+}

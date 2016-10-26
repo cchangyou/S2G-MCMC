@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+dist_dir=distribute
+
+
+mpirun --hostfile hostfile -np 8 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral1.prototxt 2>>./results/plots/a9a/a9a_lr_8.log
+
+

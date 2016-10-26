@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+dist_dir=distribute
+
+mpirun --hostfile hostfile -np 2 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral1_1.log
+
+mpirun --hostfile hostfile -np 3 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral1_3.log
+
+mpirun --hostfile hostfile -np 5 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral1_5.log
+
+mpirun --hostfile hostfile -np 7 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral1_7.log
+
+mpirun --hostfile hostfile -np 2 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral3_1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral3_1.log
+
+mpirun --hostfile hostfile -np 3 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral3_1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral3_3.log
+
+mpirun --hostfile hostfile -np 5 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral3_1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral3_5.log
+
+mpirun --hostfile hostfile -np 7 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral3_1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral3_7.log
+
+mpirun --hostfile hostfile -np 2 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral5_1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral5_1.log
+
+mpirun --hostfile hostfile -np 3 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral5_1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral5_3.log
+
+mpirun --hostfile hostfile -np 5 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral5_1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral5_5.log
+
+mpirun --hostfile hostfile -np 7 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral5_1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral5_7.log
+
+mpirun --hostfile hostfile -np 2 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral7_1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral7_1.log
+
+mpirun --hostfile hostfile -np 3 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral7_1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral7_3.log
+
+mpirun --hostfile hostfile -np 5 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral7_1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral7_5.log
+
+mpirun --hostfile hostfile -np 7 ./$dist_dir/bin/caffe.bin train --solver=./examples/a9a/fnn_solver_paral7_1.prototxt 2>>./results/plots/a9a_paral/a9a_lr_paral7_7.log
+
