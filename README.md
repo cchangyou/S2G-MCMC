@@ -23,10 +23,10 @@ The system only works in CPU mode.
 
 Please cite our NIPS paper if it helps your research:
 
-@inproceedings{S2GMCMC_NIPSS2016,
-  Author = {C. Chen, N. Ding, C. Li, Y. Zhang, and L. Carin},
-  Title = {Stochastic Gradient MCMC with Stale Gradients},
-  booktitle={NIPS},
-  Year  = {2016}
-}
+	@inproceedings{S2GMCMC_NIPSS2016,
+	  Author = {C. Chen, N. Ding, C. Li, Y. Zhang, and L. Carin},
+	  Title = {Stochastic Gradient MCMC with Stale Gradients},
+	  booktitle={NIPS},
+	  Year  = {2016}
+	}
 
