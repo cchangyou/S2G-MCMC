@@ -1,4 +1,4 @@
-# S^2G-MCMC
+# S$^2$G-MCMC
 ## Code for Stochastic Gradient MCMC with Stale Gradients
 
 The system is adapted from: https://www.cs.rochester.edu/u/yli/caffe-ps.html, which is based on Caffe and MPICH. The system is used in the NIPS 2016 paper "Stochastic Gradient MCMC with Stale Gradients".
